@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+ul {
+  list-style-type: none;
+}
+
+$themeColor: rgb(204, 150, 0);
+
+@import "./nav";
+@import "./search";
+@import "./footer";
+@import "./picture";
+
+.morePicture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  button {
+    padding: 0.25rem 0.5rem;
+    font-size: 1.5rem;
+    border: none;
+    color: rgb(255, 255, 255);
+    background-color: $themeColor;
+    cursor: pointer;
+    &:hover {
+      color: rgb(100, 100, 100);
+      background-color: rgb(250, 231, 206);
+    }
+  }
+}
