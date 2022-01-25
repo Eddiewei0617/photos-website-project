@@ -4,7 +4,8 @@ import "./styles/style.css";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Homepage from "./pages/Homepage";
-import About from "./pages/About";
+import Player from "./pages/Player";
+import PlayerForm from "./pages/PlayerForm";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<Homepage />} exact />
-        <Route path="/about" element={<About />} exact />
+        <Route path="/player" element={<Player />} exact />
+        <Route path="/player/playerform" element={<PlayerForm />} exact />
       </Routes>
       <Footer />
     </div>

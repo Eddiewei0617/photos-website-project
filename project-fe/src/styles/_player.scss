@@ -1,0 +1,93 @@
+.new {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 10px auto;
+  width: 200px;
+  font-size: 20px;
+  background-color: $themeColor;
+  color: white;
+  &:hover {
+    background-color: rgba(167, 94, 0, 0.411);
+    color: rgb(59, 59, 59);
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px solid black;
+  margin: 2rem auto;
+
+  thead,
+  tbody {
+    border: 2px solid black;
+    width: 600px;
+
+    th,
+    td {
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+
+      .playerPic {
+        width: 150px;
+        height: 200px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+.realMadrid {
+  background-color: rgba(0, 119, 255, 0.37);
+}
+.barcelona {
+  background-color: rgba(122, 5, 5, 0.336);
+}
+.paris {
+  background-color: rgba(138, 0, 138, 0.39);
+}
+
+// ------------------------------------------
+
+.insertForm {
+  text-align: center;
+  margin: 30px auto;
+
+  div {
+    margin: 20px;
+    font-size: 20px;
+
+    input,
+    textarea,
+    select {
+      vertical-align: middle;
+      margin: 10px;
+      padding: 6px;
+      border: 2px solid black;
+
+      option {
+        font-size: 16px;
+      }
+    }
+  }
+
+  button {
+    width: 80px;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    background-color: $themeColor;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    &:hover {
+      color: rgb(100, 100, 100);
+      background-color: rgb(250, 231, 206);
+    }
+  }
+}
