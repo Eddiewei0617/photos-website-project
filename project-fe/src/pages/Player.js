@@ -9,8 +9,10 @@ const Player = () => {
   const [players, setPlayers] = useState([]);
 
   useEffect(async () => {
-    let result = await axios.get(`${API_URL}/player`);
-    // console.log("result", result.data);
+    let result = await axios.get(`${API_URL}/player`, {
+      // 所有需要用到cookie裡 sid，就需要用withCredentials
+      withCredentials: true,
+    });
     setPlayers(result.data);
   }, []);
 

@@ -36,12 +36,15 @@ nav ul li {
   padding: 0.5rem 1rem;
 }
 
-nav ul li a {
+nav ul li a,
+nav ul li div {
   font-size: 1.5rem;
   color: white;
+  cursor: pointer;
 }
 
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li div:hover {
   color: black;
 }
 
@@ -252,6 +255,43 @@ table tbody td .playerPic img {
 }
 
 .insertForm button:hover {
+  color: #646464;
+  background-color: #fae7ce;
+}
+
+.signup,
+.login {
+  margin: 50px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.signup label,
+.signup input,
+.login label,
+.login input {
+  margin: 10px;
+}
+
+.signup input,
+.login input {
+  padding: 8px;
+}
+
+.signup button,
+.login button {
+  width: 80px;
+  padding: 10px;
+  color: white;
+  background-color: #cc9600;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.signup button:hover,
+.login button:hover {
   color: #646464;
   background-color: #fae7ce;
 }

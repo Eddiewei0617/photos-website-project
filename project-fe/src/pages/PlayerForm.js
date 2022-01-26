@@ -42,6 +42,7 @@ function PlayerForm() {
           name="number"
           value={playerInfo.number}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
@@ -51,6 +52,7 @@ function PlayerForm() {
           name="name"
           value={playerInfo.name}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
@@ -60,11 +62,17 @@ function PlayerForm() {
           name="photo"
           value={playerInfo.photo}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
         <label>Team </label>
-        <select name="team" value={playerInfo.team} onChange={handleChange}>
+        <select
+          name="team"
+          value={playerInfo.team}
+          onChange={handleChange}
+          required
+        >
           <option>RealMadrid</option>
           <option>Barcelona</option>
           <option>Paris</option>
@@ -77,6 +85,7 @@ function PlayerForm() {
           name="age"
           value={playerInfo.age}
           onChange={handleChange}
+          required
         />
       </div>
       <button type="submit" className="">

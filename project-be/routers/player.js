@@ -1,23 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require("mysql");
-const Promise = require("bluebird");
 require("dotenv").config();
-
-let connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  database: process.env.DB_NAME,
-});
-// 利用 bluebird 把 connection 的函式都變成 promise
-connection = Promise.promisifyAll(connection);
+const connection = require("../utilis/db");
 
 // 準備取得player的API，列表：全部資料
 router.get("/", async (req, res) => {
-  let allPlayers = await connection.queryAsync("SELECT * FROM player");
-  res.json(allPlayers);
+  if (req.session.user) {
+    let allPlayers = await connection.queryAsync("SELECT * FROM player");
+    res.json(allPlayers);
+  } else {
+    res.json({ code: "1103", message: "尚未登入" });
+  }
 });
 
 router.post("/insert", async (req, res) => {

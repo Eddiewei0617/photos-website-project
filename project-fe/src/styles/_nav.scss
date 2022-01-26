@@ -6,9 +6,11 @@ nav {
     margin-right: 3rem;
     li {
       padding: 0.5rem 1rem;
-      a {
+      a,
+      div {
         font-size: 1.5rem;
         color: rgb(255, 255, 255);
+        cursor: pointer;
         &:hover {
           color: rgb(0, 0, 0);
         }

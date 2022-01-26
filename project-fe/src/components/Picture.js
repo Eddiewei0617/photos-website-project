@@ -1,7 +1,7 @@
 import React from "react";
 
 const Picture = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   return (
     <div className="picture">
       <p>{data.photographer}</p>
