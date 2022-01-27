@@ -13,9 +13,15 @@ function Nav({ userInfo }) {
       let req = await axios.get(`${API_URL}/auth/logout`, {
         withCredentials: true,
       });
-      await navigate("/");
     } catch (e) {
       console.error(e);
+    }
+  }
+
+  function notLogin() {
+    if (userInfo == null || userInfo.code === 1201) {
+      alert("請先登入");
+      navigate("/");
     }
   }
 
@@ -25,7 +31,7 @@ function Nav({ userInfo }) {
         <li>
           <Link to="/">Home</Link>
         </li>
-        <li>
+        <li onClick={notLogin}>
           <Link to="/player">Players</Link>
         </li>
 
@@ -35,7 +41,9 @@ function Nav({ userInfo }) {
           </li>
         ) : (
           <li>
-            <div onClick={handleLogout}>Logout</div>
+            <a href="/" onClick={handleLogout}>
+              Logout
+            </a>
           </li>
         )}
 

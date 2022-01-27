@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config/blockColor";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   let [member, setMember] = useState({
@@ -16,6 +16,7 @@ function Login() {
   }
 
   let navigate = useNavigate();
+
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -24,8 +25,10 @@ function Login() {
         withCredentials: true,
       });
       console.log("res", res); // 在res.data.member可以拿到 member: {id: 2, email: 'eddie@test.com', name: 'Eddie'}
+
       if (res.data.code === "0001") {
-        await navigate("/player");
+        await navigate("/player"); // 加這行是為了讓登入後跳轉
+        window.location.reload(); // 但是跳轉後並不會改變狀態(重新整理)，所以要這行
       } else {
         alert("登入失敗，請再次嘗試");
       }

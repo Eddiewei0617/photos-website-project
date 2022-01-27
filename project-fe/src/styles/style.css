@@ -280,7 +280,9 @@ table tbody td .playerPic img {
 }
 
 .signup button,
-.login button {
+.signup a,
+.login button,
+.login a {
   width: 80px;
   padding: 10px;
   color: white;
@@ -291,7 +293,9 @@ table tbody td .playerPic img {
 }
 
 .signup button:hover,
-.login button:hover {
+.signup a:hover,
+.login button:hover,
+.login a:hover {
   color: #646464;
   background-color: #fae7ce;
 }
