@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../utilis/db");
 const bcrypt = require("bcrypt");
+const path = require("path");
 
 const { body, validationResult } = require("express-validator");
 const registerRules = [
@@ -14,44 +15,85 @@ const registerRules = [
     .withMessage("密碼不一致"),
 ];
 
-// sign up
-router.post("/signup", registerRules, async (req, res) => {
-  let { name, email, password, confirmpassword } = req.body;
-  // 1. 驗證前端傳回來的資料正不正確
-  const validateError = validationResult(req); // 如果沒錯誤的話裡面會是空的
-  if (!validateError.isEmpty()) {
-    let error = validateError.array();
-    return res.status(400).json({ code: "1100", result: error });
-  }
-
-  // 2. 該帳號是否已註冊
-  try {
-    let memberExist = await connection.queryAsync(
-      "SELECT * FROM member WHERE email=? ",
-      [email]
-    );
-    if (memberExist.length > 0) {
-      return res.json({ code: "1101", message: "該email已註冊過" });
-    }
-  } catch (e) {
-    res.json({ code: "9999", message: "請洽系統管理員" });
-  }
-
-  // 3. 密碼加密
-  let hashPassword = await bcrypt.hash(password, 10);
-
-  // 4. 建立新資料
-  try {
-    let newData = await connection.queryAsync(
-      "INSERT INTO member (name, email, password) VALUES (?,?,?)",
-      [name, email, hashPassword]
-    );
-    res.json({ code: "0001", message: "註冊成功" });
-  } catch (e) {
-    console.error(e);
-    res.json({ code: "9999", message: "請洽系統管理員" });
-  }
+// 處理從前端來的multipart form-data資料 (一樣要有中間件，才能讓後端讀懂)
+const multer = require("multer"); // 專門處理multipart-formData形式的資料
+const photoStorage = multer.diskStorage({
+  // 把圖片檔存在哪裡
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "..", "public", "uploads"));
+  },
+  // 改使用者上傳的圖片檔名，
+  // 原因一: 可能會有不同使用者的圖片同名的狀況
+  // 原因二: 開發者好管理-統一
+  filename: function (req, file, cb) {
+    // console.log("filename", file);
+    const ext = file.originalname.split(".").pop(); // 取附檔名
+    cb(null, `member-${Date.now()}.${ext}`);
+  },
 });
+const uploader = multer({
+  storage: photoStorage,
+  // 過濾檔案格式
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype !== "image/jpg" && file.mimetype !== "image/png") {
+      cb(new Error("不符合允許的檔案類型"), false);
+    }
+    // console.log("file", file);
+    cb(null, true);
+  },
+  limits: {
+    // 限制上傳檔案大小
+    fileSize: 1024 * 1024,
+  },
+});
+
+// sign up
+// uploader 一定要放registerRules前面，因為要先讀懂才能過濾
+router.post(
+  "/signup",
+  uploader.single("photo"),
+  registerRules,
+  async (req, res) => {
+    // console.log("req.file", req.file);
+
+    let { name, email, password, confirmpassword, photo } = req.body;
+    // 1. 驗證前端傳回來的資料正不正確
+    const validateError = validationResult(req); // 如果沒錯誤的話裡面會是空的
+    if (!validateError.isEmpty()) {
+      let error = validateError.array();
+      return res.status(400).json({ code: "1100", result: error });
+    }
+
+    // 2. 該帳號是否已註冊
+    try {
+      let memberExist = await connection.queryAsync(
+        "SELECT * FROM member WHERE email=? ",
+        [email]
+      );
+      if (memberExist.length > 0) {
+        return res.json({ code: "1101", message: "該email已註冊過" });
+      }
+    } catch (e) {
+      res.json({ code: "9999", message: "請洽系統管理員" });
+    }
+
+    // 3. 密碼加密
+    let hashPassword = await bcrypt.hash(password, 10);
+
+    let filename = req.file ? "/uploads/" + req.file.filename : "";
+    // 4. 建立新資料
+    try {
+      let newData = await connection.queryAsync(
+        "INSERT INTO member (name, email, password, photo) VALUES (?,?,?,?)",
+        [name, email, hashPassword, filename]
+      );
+      res.json({ code: "0001", message: "註冊成功" });
+    } catch (e) {
+      console.error(e);
+      res.json({ code: "9999", message: "請洽系統管理員" });
+    }
+  }
+);
 
 // log in
 router.post("/login", async (req, res) => {
@@ -88,9 +130,10 @@ router.post("/login", async (req, res) => {
     id: member.id,
     email: member.email,
     name: member.name,
+    photo: member.photo,
   };
   req.session.user = returnMember; // 我要把這個物件的東西存進sessions資料夾
-
+  console.log("member", member);
   res.json({ code: "0001", message: "登入成功", member: returnMember }); // 除了回傳成功之外，再傳我從資料庫拿的資料給前端
 });
 
@@ -106,7 +149,6 @@ router.get("/userinfo", async (req, res) => {
 // log out
 router.get("/logout", (req, res) => {
   req.session.user = null;
-
   res.json({ code: "0005", message: "登出成功" });
 });
 

@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const path = require("path"); // 可以自動幫你判斷路徑要斜哪一邊 /\
 const expressSession = require("express-session");
-const fileStore = require("session-file-store")(expressSession);
+const fileStore = require("session-file-store")(expressSession); // 把session登入資料存在一個資料夾，不然存在memory只有一個更動使用者就會被登出
 let playerRouter = require("./routers/player");
 let authRouter = require("./routers/auth");
 
@@ -16,7 +16,6 @@ app.use(
     credentials: true,
   })
 );
-// 要拿到前端註冊時的物件資料，需使用中間件，才可以讀到body的資料
 
 app.use(
   expressSession({
@@ -28,9 +27,14 @@ app.use(
   })
 );
 
+app.use(express.static("public"));
+
+// 要拿到前端註冊時的物件資料，需使用中間件，才可以讀到body的資料
 app.use(express.urlencoded({ extended: true }));
 // 使用此中間件才能解析的到json格式
 app.use(express.json());
+
+//------------------middleware和分route的分隔線----------------------------------
 
 app.get("/", (req, res) => {
   res.send("Homepage");
