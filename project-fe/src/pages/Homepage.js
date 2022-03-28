@@ -100,6 +100,7 @@ const Homepage = () => {
 
       <div className="morePicture">
         <button onClick={morePicture}>Load More</button>
+        <h1>45646546456465465</h1>
       </div>
     </div>
   );
