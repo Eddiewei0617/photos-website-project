@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import PList from "../components/PList";
-import { API_URL, FILE_URL } from "../config/blockColor";
+import { API_URL } from "../config/blockColor";
 
-const Player = ({ userInfo }) => {
+const Player = () => {
   const [players, setPlayers] = useState([]);
 
   useEffect(async () => {
@@ -18,12 +18,6 @@ const Player = ({ userInfo }) => {
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      {userInfo && (
-        <div className="userPhoto">
-          <img src={`${FILE_URL}${userInfo.photo}`} alt="" />
-        </div>
-      )}
-
       <Link to="/player/playerform" className="new">
         Add a new player
       </Link>

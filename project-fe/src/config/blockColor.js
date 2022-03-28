@@ -5,4 +5,3 @@ export const TEAM_COLOR = {
 };
 
 export const API_URL = "http://localhost:3001/api";
-export const FILE_URL = "http://localhost:3001";

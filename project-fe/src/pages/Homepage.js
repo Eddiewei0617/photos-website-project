@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Search from "../components/Search";
 import Picture from "../components/Picture";
-import UserContext from "../config/useContext";
 
 const Homepage = () => {
   const [input, setInput] = useState("");
@@ -65,25 +64,8 @@ const Homepage = () => {
     setData(data.concat(parsedData.photos)); // 因為load更多照片了，所以陣列變多，map出來的東西也變多
   };
 
-  // const userName = React.useContext(UserContext);
-  // useEffect(() => {
-  //   userName.setName("Eddie");
-  // }, []);
-  // function handlePlus() {
-  //   userName.setAge({ type: "plus", value: 1 });
-  // }
-  // function handleMinus() {
-  //   userName.setAge({ type: "minus", value: 1 });
-  // }
-
   return (
     <div style={{ minHeight: "100vh" }}>
-      {/* <h1>
-        {userName.name} is {userName.age} years old.
-      </h1>
-      <button onClick={handlePlus}>++++++</button>
-      <button onClick={handleMinus}>------</button> */}
-
       <Search
         search={() => {
           // JS Closure

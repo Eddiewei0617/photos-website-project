@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { API_URL } from "../config/blockColor";
+import { useNavigate } from "react-router-dom";
 
 function Nav({ userInfo }) {
-  // console.log("userInfo", userInfo);
+  console.log("userInfo", userInfo);
 
+  let navigate = useNavigate();
   async function handleLogout() {
     try {
       let req = await axios.get(`${API_URL}/auth/logout`, {
@@ -16,7 +18,6 @@ function Nav({ userInfo }) {
     }
   }
 
-  let navigate = useNavigate();
   function notLogin() {
     if (userInfo == null || userInfo.code === 1201) {
       alert("請先登入");
