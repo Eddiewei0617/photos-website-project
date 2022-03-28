@@ -9,6 +9,7 @@ function Signup() {
     email: "",
     password: "",
     confirmpassword: "",
+    photo: "",
   });
 
   function signupChange(e) {
@@ -17,11 +18,25 @@ function Signup() {
     setMember(newMember);
   }
 
+  function signupUpload(e) {
+    let newMember = { ...member };
+    newMember.photo = e.target.files[0];
+    setMember(newMember);
+  }
+
   let navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      let req = await axios.post(`${API_URL}/auth/signup`, member);
+      // 由於要傳圖片的關係，json格式不能傳檔案，我們得用formData的形式傳送
+      let formData = new FormData();
+      formData.append("name", member.name);
+      formData.append("email", member.email);
+      formData.append("password", member.password);
+      formData.append("confirmpassword", member.confirmpassword);
+      formData.append("photo", member.photo);
+      console.log("formData", formData);
+      let req = await axios.post(`${API_URL}/auth/signup`, formData);
       await navigate("/login");
     } catch (e) {
       console.error("handleSubmit", e);
@@ -82,6 +97,17 @@ function Signup() {
               name="confirmpassword"
               value={member.confirmpassword}
               onChange={signupChange}
+              required
+            />
+          </div>
+          <br />
+          <div className="form-group">
+            <label for="">Photo</label>
+            <input
+              type="file"
+              className="form-control"
+              name="photo"
+              onChange={signupUpload}
               required
             />
           </div>

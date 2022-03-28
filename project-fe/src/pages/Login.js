@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config/blockColor";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   let [member, setMember] = useState({
@@ -16,7 +16,6 @@ function Login() {
   }
 
   let navigate = useNavigate();
-
   async function handleSubmit(e) {
     e.preventDefault();
     try {
